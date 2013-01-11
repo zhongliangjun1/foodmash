@@ -83,8 +83,7 @@ public class ImageResource {
 				} catch (IOException e) {
 		 
 					e.printStackTrace();
-				}
-		 
+				}		 
 		}
-
+		
 }
