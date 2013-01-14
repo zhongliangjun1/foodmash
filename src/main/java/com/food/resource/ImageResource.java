@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -49,7 +50,8 @@ public class ImageResource {
 		@POST
 		@Path("/fileWithformparams")	
 		@Consumes(MediaType.MULTIPART_FORM_DATA) 	
-		public Response fileWithFormParams(@FormDataParam("name") String msg1, @FormDataParam("age") int msg2,
+		@Produces(MediaType.APPLICATION_JSON)
+		public People fileWithFormParams(@FormDataParam("name") String msg1, @FormDataParam("age") int msg2,
 				@FormDataParam("imgfile") InputStream uploadedInputStream,
 				@FormDataParam("imgfile") FormDataContentDisposition fileDetail  ){
 				
@@ -62,9 +64,23 @@ public class ImageResource {
 			    String uploadedFileLocation = "/Users/mac/Downloads/eatIMAGE/" + fileDetail.getFileName();	    
 				writeToFile(uploadedInputStream, uploadedFileLocation);						
 				String output = "File uploaded to : " + uploadedFileLocation;
-
-				return Response.status(200).entity(output).build();			
+				
+				return people;	
+				//return Response.status(200).entity(output).build();			
 		}
+		
+		//http://localhost:8080/foodmash/rest/image/start
+		@GET
+		@Path("/start")
+		@Produces(MediaType.APPLICATION_JSON)
+		public String strat(@QueryParam("token") String msg1){
+		//public Response getFromManyParams(@PathParam("param1") String msg1, @PathParam("param") int msg2){
+			//String result = "pathparam1:"+msg1+" pathparam2:"+msg2;
+			String test = msg1;
+			System.out.println(test);
+			return msg1;
+		}
+		
 		
 		// save uploaded file to new location
 		private void writeToFile(InputStream uploadedInputStream,String uploadedFileLocation) {

@@ -1,5 +1,6 @@
 package com.food.test;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
 import com.food.model.Friend;
+import com.food.model.Production;
 import com.food.mongo.JongoClient;
 
 public class TestMongo {
@@ -26,6 +28,8 @@ public class TestMongo {
 			System.out.println("without:"+age);
 		}
 	}
+	
+	
 	
 	/*error org.jongo.MongoIterator cannot be cast to java.util.List*/
 	public static void tryFindList(){

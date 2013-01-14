@@ -21,5 +21,13 @@ public class Model {
     public void setId(ObjectId id) {
         this.id = id;
     }
+    
+    public String getStringId(){
+    	if(this.id == null){
+    		return null;
+    	}else{
+    		return this.id.toString();
+    	}
+    }
 
 }
