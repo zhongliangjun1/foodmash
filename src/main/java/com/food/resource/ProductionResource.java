@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.food.enums.CodeStatus;
@@ -27,20 +27,48 @@ public class ProductionResource {
 	private ProductionService productionService = new ProductionService();
 	private JudgeService judgeService = new JudgeService();
 	
-	//http://localhost:8080/foodmash/rest/foodmash/entry?deviceId=123a4op231
+	//http://localhost:8080/foodmash/rest/foodmash/refresh?deviceId=123a4op231
+	//刷新随机获取两个作品，并检验是否有消息
 	@GET
-	@Path("/entry")
+	@Path("/refresh")
 	@Produces(MediaType.APPLICATION_JSON)
-	public PKentity entryMain(@PathParam("deviceId") String deviceId){
+	public PKentity refresh(@QueryParam("deviceId") String deviceId){
 		PKentity entity = new PKentity();
-		List<Production> list = productionService.getRandomTwoProduction();
-		if(list!=null && list.size()>1){
-			entity.setFirstProduction(list.get(0));
-			entity.setSecondProduction(list.get(1));
-			entity.setHasMessage(judgeService.hasMessage(deviceId));
-			entity.setCodeStatus(CodeStatus.Success.value);
+		if(deviceId!=null){
+			List<Production> list = productionService.getRandomTwoProduction();
+			if(list!=null && list.size()>1){
+				entity.setFirstProduction(list.get(0));
+				entity.setSecondProduction(list.get(1));
+				entity.setHasMessage(judgeService.hasMessage(deviceId));
+				entity.setCodeStatus(CodeStatus.Success.value);
+			}else{
+				entity.setCodeStatus(CodeStatus.ServerError.value);
+			}
 		}else{
-			entity.setCodeStatus(CodeStatus.ServerError.value);
+			entity.setCodeStatus(CodeStatus.ClientError.value);
+		}		
+		
+		return entity;
+	}
+	
+	//http://localhost:8080/foodmash/rest/foodmash/like?likeId=50f43f47a334f65cfad5b04c&dislikeId=50f43f47a334f65cfad5b04d&deviceId=123a4op231
+    //处理该两件作品评价，再获取两个作品，并检验是否有消息
+	@GET
+	@Path("/like")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PKentity like(@QueryParam("likeId") String likeId,@QueryParam("dislikeId") String dislikeId,
+			@QueryParam("deviceId") String deviceId){
+		PKentity entity = new PKentity();
+		if(likeId!=null && dislikeId!=null && deviceId!=null){
+			boolean treatLike = productionService.treateLike(likeId, deviceId);
+			boolean treatDislike = productionService.treatDislike(dislikeId);
+			if(treatLike==true && treatDislike==true){
+				entity = refresh(deviceId); //刷新随机获取两个作品，并检验是否有消息
+			}else{
+				entity.setCodeStatus(CodeStatus.ServerError.value);
+			}
+		}else{
+			entity.setCodeStatus(CodeStatus.ClientError.value);
 		}
 		
 		return entity;

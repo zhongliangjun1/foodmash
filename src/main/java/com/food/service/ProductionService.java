@@ -3,10 +3,13 @@ package com.food.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.ws.rs.PathParam;
 
 import org.bson.types.ObjectId;
 
+import com.food.dao.LikeRecordDAO;
 import com.food.dao.ProductionDAO;
+import com.food.model.LikeRecord;
 import com.food.model.Production;
 
 /**
@@ -17,6 +20,7 @@ import com.food.model.Production;
 public class ProductionService {
 	
 	private ProductionDAO productionDAO = new ProductionDAO();
+	private LikeRecordDAO likeRecordDAO = new LikeRecordDAO();
 	private static final int ShowNumLimit = 200;
 	private final Random random = new Random();
 	
@@ -59,6 +63,49 @@ public class ProductionService {
 			location = temporary;
 		}
 		return location;
+	}
+	
+	/**
+	 * 处理被like作品
+	 * @param likeId
+	 * @param deviceId
+	 * @return
+	 */
+	public boolean treateLike(String likeId, String deviceId){
+		boolean result = false;
+		if(likeId != null){
+			Production p = productionDAO.getProductionById(likeId);
+			if(p != null){
+				p.setShowNum(p.getShowNum()+1);
+				p.setLikeNum(p.getLikeNum()+1);
+				boolean r = productionDAO.updateProduction(p); //增加作品like数&展示次数
+				if(r == true){
+					LikeRecord likeRecord = new LikeRecord();
+					likeRecord.setProductionId(likeId);
+					likeRecord.setLikerId(deviceId);
+					likeRecordDAO.addLikeRecord(likeRecord); //增加作品like记录
+					result = true;
+				}
+			}
+		}		
+		return result;
+	}
+	
+	/**
+	 * 处理dislike的作品
+	 * @param dislikeId
+	 * @return
+	 */
+	public boolean treatDislike(String dislikeId){
+		boolean result = false;
+		if(dislikeId != null){
+			Production p = productionDAO.getProductionById(dislikeId);
+			if(p != null){
+				p.setShowNum(p.getShowNum()+1);
+				result = productionDAO.updateProduction(p); //增加作品展示次数				
+			}
+		}		
+		return result;
 	}
 	
 	
