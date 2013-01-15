@@ -1,5 +1,7 @@
 package com.food.resource;
 
+import com.food.service.ProductionService;
+
 
 
 /**
@@ -8,6 +10,8 @@ package com.food.resource;
  * @version 创建时间：Jan 15, 2013 12:17:44 AM
  */
 public class ProductionResource {
+	
+	private ProductionService productionService = new ProductionService();
 	
 	
 	

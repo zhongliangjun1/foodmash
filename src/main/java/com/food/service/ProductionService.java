@@ -18,7 +18,7 @@ public class ProductionService {
 	
 	private ProductionDAO productionDAO = new ProductionDAO();
 	private static final int ShowNumLimit = 200;
-	private Random random = new Random();
+	private final Random random = new Random();
 	
 	/**
 	 * 随机获取两件作品
