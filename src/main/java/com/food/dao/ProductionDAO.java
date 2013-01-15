@@ -91,6 +91,35 @@ public class ProductionDAO {
 		return p;
 	}
 	
+	/**
+	 * 更新原作品
+	 * @param production 带有ObjectId
+	 */
+	public boolean  updateProduction(Production production){
+		MongoCollection productions = jongo.getCollection("productions");
+		if(productions != null){
+		   productions.save(production);
+		   return true;
+		}else{
+		   return false;
+		}
+	}
+	
+	/**
+	 * 加入新作品
+	 * @param production ObjectId为空
+	 * @return
+	 */
+	public boolean addProduction(Production production){
+		MongoCollection productions = jongo.getCollection("productions");
+		if(productions != null){
+		   productions.save(production);
+		   return true;
+		}else{
+		   return false;
+		}
+	}
+	
 	
 
 }
