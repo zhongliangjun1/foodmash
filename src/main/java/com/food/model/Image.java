@@ -13,12 +13,32 @@ public class Image {
 	
 	private String naturalWidth; //图片原宽
 	private String naturalHeight; //图片原长
-	private String CutWidth; //裁剪后宽
-	private String CutHeight; //裁剪后高
+	private String cutWidth; //裁剪后宽
+	private String cutHeight; //裁剪后高
 	
 	public static final String UNCHANGE = "x"; //按目标尺寸长或宽中压缩比大的一个比例值进行等比缩放
 	public static final String BLANK = "o"; //短边不足部分留白填充
 	public static final String CLIP = "c"; //多出部分对称裁剪掉
+	
+	private static final String ADDRESS = "http://192.168.8.92:8400/";
+	
+	/**
+	 * 获取图片的最终URL
+	 * @param cutType
+	 * @param cutWidth
+	 * @param cutHeight
+	 * @return
+	 */
+	public String getImgSrc(String cutType, String cutWidth, String cutHeight) {
+		if(tempSrc!=null && cutType!=null && cutWidth!=null && cutHeight!=null){
+			imgSrc= ADDRESS + tempSrc + "("+ cutWidth + cutType + cutHeight + ")/thumb.jpg"; // 明天注意下这边的拼接是否正确
+		}
+		return imgSrc;
+	}
+	
+	public void setImgSrc(String imgSrc) {
+		this.imgSrc = imgSrc;
+	}
 	
 	public String getCode() {
 		return code;
@@ -26,12 +46,7 @@ public class Image {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public String getImgSrc() {
-		return imgSrc;
-	}
-	public void setImgSrc(String imgSrc) {
-		this.imgSrc = imgSrc;
-	}
+	
 	public String getFilename() {
 		return filename;
 	}
@@ -57,16 +72,16 @@ public class Image {
 		this.naturalHeight = naturalHeight;
 	}
 	public String getCutWidth() {
-		return CutWidth;
+		return cutWidth;
 	}
 	public void setCutWidth(String cutWidth) {
-		CutWidth = cutWidth;
+		this.cutWidth = cutWidth;
 	}
 	public String getCutHeight() {
-		return CutHeight;
+		return cutHeight;
 	}
 	public void setCutHeight(String cutHeight) {
-		CutHeight = cutHeight;
+		this.cutHeight = cutHeight;
 	}
 	
 	

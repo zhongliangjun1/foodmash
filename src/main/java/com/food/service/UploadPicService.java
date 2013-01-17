@@ -12,7 +12,14 @@ import com.food.model.Image;
 
 public class UploadPicService {
 	
-	
+	 /**
+	  * 上传图片
+	  * @param file
+	  * @param filename
+	  * @return Image的 getImgSrc(String cutType, String cutWidth, String cutHeight) 方法根据不同需求返回对应的图片URL地址
+	  * @throws FileNotFoundException
+	  * @throws IOException
+	  */
      public Image upload(File file, String filename) 
           throws FileNotFoundException, IOException{
 		
