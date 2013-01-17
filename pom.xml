@@ -37,6 +37,12 @@
 			<version>1.8</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.dianping.piccentercloud</groupId>
+			<artifactId>piccenter-storage-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		
 		<!-- mongo -->
 		<dependency>
 			<groupId>org.jongo</groupId>
