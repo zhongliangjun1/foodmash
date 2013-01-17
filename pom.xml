@@ -37,10 +37,18 @@
 			<version>1.8</version>
 		</dependency>
 		
+		<!--DP pic store -->
 		<dependency>
 			<groupId>com.dianping.piccentercloud</groupId>
 			<artifactId>piccenter-storage-api</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+		
+		<!-- gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.2</version>
 		</dependency>
 		
 		<!-- mongo -->
