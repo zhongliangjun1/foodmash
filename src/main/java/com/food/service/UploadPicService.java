@@ -1,4 +1,4 @@
-package com.food.test;
+package com.food.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,10 +8,13 @@ import java.util.Map;
 
 import com.dianping.piccentercloud.storage.api.HttpUploadAPI;
 import com.dianping.piccentercloud.storage.api.Token;
+import com.food.model.Image;
 
-public class TestPicStore {
-
-	public void upload() throws FileNotFoundException, IOException{
+public class UploadPicService {
+	
+	
+     public Image upload(File file, String filename) 
+          throws FileNotFoundException, IOException{
 		
 		//构建HttpUploadAPI对象，设置请求的url+请求超时时间+读取的超时时间
 		HttpUploadAPI uploadApi = new HttpUploadAPI("test", "test");
@@ -34,21 +37,26 @@ public class TestPicStore {
 		//注意:由于公司应用都走反向代理，为了获取用户ip请加入上述代码
 
 		//发送请求，获取返回数据
-		Map<String,String> map = (Map<String,String>)uploadApi.execute(token, new File("E:\\28012_842055_131658.jpg"), "test", header);
-
+		//Map<String,String> map = (Map<String,String>)uploadApi.execute(token, new File("E:\\28012_842055_131658.jpg"), "car", header);
+		Map<String,String> map = (Map<String,String>)uploadApi.execute(token, file, filename, header);
+		
+		Image image = new Image();
 		//成功的返回字段：code+url+width+height
-		System.out.println(map.get("code"));
-		System.out.println(map.get("url"));
-		System.out.println(map.get("width"));
-		System.out.println(map.get("height"));
+		image.setCode(map.get("code"));
+		image.setFilename(filename);
+		image.setTempSrc(map.get("url"));
+		image.setNaturalWidth(map.get("width"));
+		image.setNaturalHeight(map.get("height"));
+		
+		return image;
+//		System.out.println(map.get("code"));
+//		System.out.println(map.get("url"));
+//		System.out.println(map.get("width"));
+//		System.out.println(map.get("height"));
 		
 	}
+     
+     
 	
-	
-	public static void main(String[] args) throws FileNotFoundException, IOException {
-		// TODO Auto-generated method stub
-		TestPicStore test = new TestPicStore();
-        test.upload();
-	}
 
 }

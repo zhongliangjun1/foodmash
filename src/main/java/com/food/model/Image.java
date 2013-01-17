@@ -1,0 +1,75 @@
+package com.food.model;
+/**
+ * 
+ * @author liangjun.zhong
+ */
+public class Image {
+	
+	private String code;
+	
+	private String tempSrc; //临时图片地址，可根据需求组装成最终所需类型
+	private String imgSrc; //图片根据裁剪类型确定的最终地址
+	private String filename; //图片名
+	
+	private String naturalWidth; //图片原宽
+	private String naturalHeight; //图片原长
+	private String CutWidth; //裁剪后宽
+	private String CutHeight; //裁剪后高
+	
+	public static final String UNCHANGE = "x"; //按目标尺寸长或宽中压缩比大的一个比例值进行等比缩放
+	public static final String BLANK = "o"; //短边不足部分留白填充
+	public static final String CLIP = "c"; //多出部分对称裁剪掉
+	
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getImgSrc() {
+		return imgSrc;
+	}
+	public void setImgSrc(String imgSrc) {
+		this.imgSrc = imgSrc;
+	}
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	public String getTempSrc() {
+		return tempSrc;
+	}
+	public void setTempSrc(String tempSrc) {
+		this.tempSrc = tempSrc;
+	}
+	public String getNaturalWidth() {
+		return naturalWidth;
+	}
+	public void setNaturalWidth(String naturalWidth) {
+		this.naturalWidth = naturalWidth;
+	}
+	public String getNaturalHeight() {
+		return naturalHeight;
+	}
+	public void setNaturalHeight(String naturalHeight) {
+		this.naturalHeight = naturalHeight;
+	}
+	public String getCutWidth() {
+		return CutWidth;
+	}
+	public void setCutWidth(String cutWidth) {
+		CutWidth = cutWidth;
+	}
+	public String getCutHeight() {
+		return CutHeight;
+	}
+	public void setCutHeight(String cutHeight) {
+		CutHeight = cutHeight;
+	}
+	
+	
+	
+
+}
