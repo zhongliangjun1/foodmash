@@ -1,9 +1,11 @@
 package com.food.test;
 /**
- * client
+ * client POJO
  * @author liangjun.zhong
  */
 public class Production {
+	
+	private static final String ADDRESS = "http://192.168.8.92:8400";
 	
 	private String id;
 	
@@ -29,7 +31,7 @@ public class Production {
 		this.authorId = authorId;
 	}
 	public String getImgSrc() {
-		return imgSrc;
+		return ADDRESS+imgSrc;
 	}
 	public void setImgSrc(String imgSrc) {
 		this.imgSrc = imgSrc;
