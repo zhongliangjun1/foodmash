@@ -40,13 +40,53 @@ public class AwardProductionDAO {
 	 * @return
 	 */
 	public List<ObjectId> checkNewAwardProduction(String deviceId){
-		//limit = limit+1; //less than limit
 		List<ObjectId> list = null;
 		MongoCollection awardProductions = jongo.getCollection("awardProductions");
 		if(awardProductions != null){
 			list = awardProductions.distinct("_id").query("{ authorId: \""+deviceId+"\" , isInform:false } ").as(ObjectId.class);
 		}	
 		return list;
+	}
+	
+	/**
+	 * 获取精选集合id List
+	 * @return
+	 */
+	public List<ObjectId> getAwardProductions(){
+		List<ObjectId> list = null;
+		MongoCollection awardProductions = jongo.getCollection("awardProductions");
+		if(awardProductions != null){
+			list = awardProductions.distinct("_id").as(ObjectId.class);
+		}
+		return list;
+	}
+	
+	/**
+	 * 根据获奖记录的id，获取获奖记录
+	 * @param id
+	 * @return
+	 */
+	public AwardProduction getAwardProductionById(String id){
+		AwardProduction p = null;
+		MongoCollection awardProductions = jongo.getCollection("awardProductions");
+		if(awardProductions != null){
+			p = awardProductions.findOne(new ObjectId(id)).as(AwardProduction.class);
+		}
+		return p;
+	}
+	
+	/**
+	 * 根据记录的ObjectId id 获取记录
+	 * @param id
+	 * @return
+	 */
+	public AwardProduction getAwardProductionById(ObjectId id){
+		AwardProduction p = null;
+		MongoCollection awardProductions = jongo.getCollection("awardProductions");
+		if(awardProductions != null){
+			p = awardProductions.findOne(id).as(AwardProduction.class);
+		}
+		return p;
 	}
 
 }

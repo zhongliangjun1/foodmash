@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -14,7 +16,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.bson.types.ObjectId;
+
+import com.food.dao.AwardProductionDAO;
+import com.food.dao.ProductionDAO;
 import com.food.enums.CodeStatus;
+import com.food.model.AwardProduction;
 import com.food.model.CodeEntity;
 import com.food.model.Image;
 import com.food.model.PKentity;
@@ -37,6 +44,9 @@ public class ProductionResource {
 	private ProductionService productionService = new ProductionService();
 	private UploadPicService uploadPicService = new UploadPicService();
 	private JudgeService judgeService = new JudgeService();
+	
+	private AwardProductionDAO awardProductionDAO = new AwardProductionDAO();
+	private ProductionDAO productionDAO = new ProductionDAO();
 	
 	//http://localhost:8080/foodmash/rest/foodmash/refresh?deviceId=123a4op231
 	//刷新随机获取两个作品，并检验是否有消息
@@ -122,6 +132,44 @@ public class ProductionResource {
 		   
 			return entity;				
 	}
+	
+	//http://localhost:8080/foodmash/rest/foodmash/albumIds
+	//获取精选集 id List 为作品的id List
+	@GET
+	@Path("/albumIds")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> getAwardProductionIds(){
+	    List<String> list = null;
+		List<ObjectId> objectIds = awardProductionDAO.getAwardProductions();
+		int num = 0;
+		if(objectIds!=null){
+			Stack<String> stack = new Stack<String>();
+			for(ObjectId objectId:objectIds){
+				AwardProduction p = awardProductionDAO.getAwardProductionById(objectId);
+				if(p!=null){
+					stack.push(p.getProductionId()); //原作品的id入栈
+					num = num+1;
+				}
+				//stack.push(objectId.toString());			
+			}
+			list = new LinkedList<String>();
+			while(num>0){
+				list.add(stack.pop()); //作品的id List
+				num = num-1;
+			}
+		}		
+		return list;
+	}
+	
+	//http://localhost:8080/foodmash/rest/foodmash/production?productionId=50f98cd830042e2a542b1400
+	//根据作品id获取作品详细内容
+	@GET
+	@Path("/production")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Production getProductionById(@QueryParam("productionId") String productionId){
+		return productionDAO.getProductionById(productionId);
+	}
+	
 	
 	
 	
