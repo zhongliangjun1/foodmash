@@ -104,7 +104,6 @@ public class ProductionResource {
 		    			if(image!=null && image.getCode().equals("200")){ //成功完成图片上传
 		    				boolean result = productionService.addNewProduction(deviceId, review, image);
 		    				if(result){ //添加作品记录成功
-		    					entity.setReview(review);
 		    					entity.setHasMessage(judgeService.hasMessage(deviceId));
 			    				entity.setCodeStatus(CodeStatus.Success.value);
 			    				return entity; //成功会提前返回 

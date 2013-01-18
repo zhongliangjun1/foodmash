@@ -9,7 +9,6 @@ public class CodeEntity {
 	private int codeStatus; //response status
 	private boolean hasMessage; //是否有新消息
 	
-	private String review;
 
 	public int getCodeStatus() {
 		return codeStatus;
@@ -24,13 +23,6 @@ public class CodeEntity {
 		this.hasMessage = hasMessage;
 	}
 	
-	
-	public String getReview() {
-		return review;
-	}
-	public void setReview(String review) {
-		this.review = review;
-	}
 	
 	
 	
