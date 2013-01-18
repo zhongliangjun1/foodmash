@@ -1,18 +1,29 @@
 package com.food.resource;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.food.enums.CodeStatus;
+import com.food.model.Image;
 import com.food.model.PKentity;
+import com.food.model.People;
 import com.food.model.Production;
 import com.food.service.JudgeService;
 import com.food.service.ProductionService;
+import com.food.service.UploadPicService;
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
 
 
 
@@ -25,6 +36,7 @@ import com.food.service.ProductionService;
 public class ProductionResource {
 	
 	private ProductionService productionService = new ProductionService();
+	private UploadPicService uploadPicService = new UploadPicService();
 	private JudgeService judgeService = new JudgeService();
 	
 	//http://localhost:8080/foodmash/rest/foodmash/refresh?deviceId=123a4op231
@@ -73,6 +85,39 @@ public class ProductionResource {
 		
 		return entity;
 	}
+	
+	@POST
+	@Path("/upload")	
+	@Consumes(MediaType.MULTIPART_FORM_DATA) 	
+	@Produces(MediaType.APPLICATION_JSON)
+	public PKentity upload(@FormDataParam("deviceId") String deviceId, @FormDataParam("review") String review,
+			@FormDataParam("imgfile") InputStream inputStream,
+			@FormDataParam("imgfile") FormDataContentDisposition fileDetail  ){
+		    PKentity entity = new PKentity();
+		    if(deviceId!=null && review!=null && inputStream!=null && fileDetail!=null){
+		    	File file = uploadPicService.convertInputstreamToLocationFile(inputStream, fileDetail);
+		    	if(file!=null){
+		    		try {
+		    			Image image = uploadPicService.upload(file, fileDetail.getFileName()); 
+		    			if(image!=null && image.getCode().equals("200")){ //成功完成图片上传
+		    				
+		    			}
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+		    	}
+		    	entity.setCodeStatus(CodeStatus.ServerError.value);
+		    }else{
+		    	entity.setCodeStatus(CodeStatus.ClientError.value);
+		    }
+		   
+			
+			return entity;				
+	}
+	
+	
 	
 	
 	

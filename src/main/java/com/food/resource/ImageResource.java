@@ -1,6 +1,7 @@
 package com.food.resource;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +18,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
+import com.food.model.Image;
 import com.food.model.People;
+import com.food.service.UploadPicService;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
@@ -62,8 +65,21 @@ public class ImageResource {
 			    
 			    
 			    String uploadedFileLocation = "/Users/mac/Downloads/eatIMAGE/" + fileDetail.getFileName();	    
-				writeToFile(uploadedInputStream, uploadedFileLocation);						
-				String output = "File uploaded to : " + uploadedFileLocation;
+				File file = writeToFile(uploadedInputStream, uploadedFileLocation);	
+				if(file!=null){
+					String output = "File uploaded to : " + uploadedFileLocation;
+					UploadPicService s = new UploadPicService();
+					try {
+						Image image = s.upload(file, "test");
+						System.out.println("get it:"+image.getTempSrc());
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				
 				return people;	
 				//return Response.status(200).entity(output).build();			
@@ -83,23 +99,22 @@ public class ImageResource {
 		
 		
 		// save uploaded file to new location
-		private void writeToFile(InputStream uploadedInputStream,String uploadedFileLocation) {
-		 
-				try {
-					OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
-					int read = 0;
-					byte[] bytes = new byte[1024];
-		 
-					//out = new FileOutputStream(new File(uploadedFileLocation));
-					while ((read = uploadedInputStream.read(bytes)) != -1) {
-						out.write(bytes, 0, read);
-					}
-					out.flush();
-					out.close();
-				} catch (IOException e) {
-		 
-					e.printStackTrace();
-				}		 
-		}
+		 		private File writeToFile(InputStream uploadedInputStream,String uploadedFileLocation) {		
+		 			    File file = null;
+		 				try {
+		 					file = new File(uploadedFileLocation);
+		 					OutputStream out = new FileOutputStream(file);
+		 					int read = 0;
+		 					byte[] bytes = new byte[1024];	 
+		 					while ((read = uploadedInputStream.read(bytes)) != -1) {
+		 						out.write(bytes, 0, read);
+		 					}
+		 					out.flush();
+		 					out.close();
+		 				} catch (IOException e) {	 
+		 					e.printStackTrace();
+		 				}
+		 				return file;
+		 		}
 		
 }

@@ -2,15 +2,25 @@ package com.food.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import com.dianping.piccentercloud.storage.api.HttpUploadAPI;
 import com.dianping.piccentercloud.storage.api.Token;
 import com.food.model.Image;
+import com.sun.jersey.core.header.FormDataContentDisposition;
 
 public class UploadPicService {
+	
+	private final Random random = new Random();
 	
 	 /**
 	  * 上传图片
@@ -62,6 +72,47 @@ public class UploadPicService {
 //		System.out.println(map.get("height"));
 		
 	}
+    
+     /**
+      * 将获取到的图片流保存为临时文件
+      * @param inputStream
+      * @param fileDetail
+      * @return
+      */
+    public File convertInputstreamToLocationFile(InputStream inputStream, FormDataContentDisposition fileDetail){
+    	String filename = fileDetail.getFileName();
+    	
+    	Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");  
+		String strTime = format.format(date); 
+		
+		int randomNumber = random.nextInt(1000000);
+    	
+    	String uploadedFileLocation = "/Users/mac/Downloads/ImageLocation/"+randomNumber+"_"+strTime+"_"+filename;
+    	
+    	File file = writeToFile(inputStream, uploadedFileLocation);
+    	return file;   	
+    }
+    
+    
+        // save uploaded file to new location
+ 		private File writeToFile(InputStream uploadedInputStream,String uploadedFileLocation) {		
+ 			    File file = null;
+ 				try {
+ 					file = new File(uploadedFileLocation);
+ 					OutputStream out = new FileOutputStream(file);
+ 					int read = 0;
+ 					byte[] bytes = new byte[1024];	 
+ 					while ((read = uploadedInputStream.read(bytes)) != -1) {
+ 						out.write(bytes, 0, read);
+ 					}
+ 					out.flush();
+ 					out.close();
+ 				} catch (IOException e) {	 
+ 					e.printStackTrace();
+ 				}
+ 				return file;
+ 		}
      
      
 	
