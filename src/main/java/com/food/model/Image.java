@@ -44,6 +44,17 @@ public class Image {
 		return tempSrc;
 	}
 	
+	/**
+	 * 获取图片前缀URL
+	 * @return
+	 */
+	public String getPrefixSrc(){
+		if(tempSrc!=null){
+			tempSrc = ADDRESS + tempSrc;
+		}
+		return tempSrc;
+	}
+	
 	public void setImgSrc(String imgSrc) {
 		this.imgSrc = imgSrc;
 	}

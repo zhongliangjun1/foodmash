@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,7 +16,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 
 import com.food.model.Image;
@@ -31,7 +31,7 @@ public class ImageResource {
 		@GET
 		@Path("/pathparams/{param1}-{param2}")
 		@Produces("text/plain")
-		public String getFromManyParams(@PathParam("param1") String msg1, @PathParam("param") int msg2){
+		public String getFromManyParams(@PathParam("param1") String msg1, @PathParam("param2") int msg2){
 		//public Response getFromManyParams(@PathParam("param1") String msg1, @PathParam("param") int msg2){
 			String result = "pathparam1:"+msg1+" pathparam2:"+msg2;
 			return result;	
@@ -42,6 +42,17 @@ public class ImageResource {
 		@Path("/json/{param1}-{param2}")
 		@Produces(MediaType.APPLICATION_JSON)
 		public People jsonManyParams(@PathParam("param1") String msg1, @PathParam("param2") int msg2){
+		    People people = new People();
+		    people.setId(0);
+		    people.setName(msg1);
+		    people.setAge(msg2);
+			return people;	
+		}
+		
+		@POST
+		@Path("/jsonpost")
+		@Produces(MediaType.APPLICATION_JSON)
+		public People jsonManyParamsoost(@FormParam("param1") String msg1, @FormParam("param2") int msg2){
 		    People people = new People();
 		    people.setId(0);
 		    people.setName(msg1);

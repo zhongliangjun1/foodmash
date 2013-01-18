@@ -15,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.food.enums.CodeStatus;
+import com.food.model.CodeEntity;
 import com.food.model.Image;
 import com.food.model.PKentity;
 import com.food.model.People;
@@ -24,8 +25,6 @@ import com.food.service.ProductionService;
 import com.food.service.UploadPicService;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
-
-
 
 /**
  * 类说明
@@ -86,21 +85,30 @@ public class ProductionResource {
 		return entity;
 	}
 	
+	//http://localhost:8080/foodmash/rest/foodmash/upload
+	//deviceId  review  imgfile
+	//上传一件作品，并检验是否有消息
 	@POST
 	@Path("/upload")	
 	@Consumes(MediaType.MULTIPART_FORM_DATA) 	
 	@Produces(MediaType.APPLICATION_JSON)
-	public PKentity upload(@FormDataParam("deviceId") String deviceId, @FormDataParam("review") String review,
+	public CodeEntity upload(@FormDataParam("deviceId") String deviceId, @FormDataParam("review") String review,
 			@FormDataParam("imgfile") InputStream inputStream,
 			@FormDataParam("imgfile") FormDataContentDisposition fileDetail  ){
-		    PKentity entity = new PKentity();
+		    CodeEntity entity = new CodeEntity();
 		    if(deviceId!=null && review!=null && inputStream!=null && fileDetail!=null){
 		    	File file = uploadPicService.convertInputstreamToLocationFile(inputStream, fileDetail);
 		    	if(file!=null){
 		    		try {
 		    			Image image = uploadPicService.upload(file, fileDetail.getFileName()); 
 		    			if(image!=null && image.getCode().equals("200")){ //成功完成图片上传
-		    				
+		    				boolean result = productionService.addNewProduction(deviceId, review, image);
+		    				if(result){ //添加作品记录成功
+		    					entity.setReview(review);
+		    					entity.setHasMessage(judgeService.hasMessage(deviceId));
+			    				entity.setCodeStatus(CodeStatus.Success.value);
+			    				return entity; //成功会提前返回 
+		    				}	
 		    			}
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
@@ -113,7 +121,6 @@ public class ProductionResource {
 		    	entity.setCodeStatus(CodeStatus.ClientError.value);
 		    }
 		   
-			
 			return entity;				
 	}
 	

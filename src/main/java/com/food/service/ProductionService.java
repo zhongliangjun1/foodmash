@@ -9,6 +9,7 @@ import org.bson.types.ObjectId;
 
 import com.food.dao.LikeRecordDAO;
 import com.food.dao.ProductionDAO;
+import com.food.model.Image;
 import com.food.model.LikeRecord;
 import com.food.model.Production;
 
@@ -108,7 +109,26 @@ public class ProductionService {
 		return result;
 	}
 	
-	
+	/**
+	 * 添加作品记录
+	 * @param deviceId
+	 * @param review
+	 * @param image
+	 * @return
+	 */
+	public boolean addNewProduction(String deviceId, String review, Image image){
+		boolean result = false;
+		if(deviceId!=null && review!=null && image!=null){
+			Production production = new Production();
+			production.setAuthorId(deviceId);
+			production.setReview(review);
+			production.setImgSrc(image.getTempSrc());
+			production.setLikeNum(0);
+			production.setShowNum(0);
+			result = productionDAO.addProduction(production);
+		}		
+		return result;
+	}
 	
 	
 	
