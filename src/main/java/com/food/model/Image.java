@@ -20,7 +20,7 @@ public class Image {
 	public static final String BLANK = "o"; //短边不足部分留白填充
 	public static final String CLIP = "c"; //多出部分对称裁剪掉
 	
-	private static final String ADDRESS = "http://192.168.8.92:8400/";
+	private static final String ADDRESS = "http://192.168.8.92:8400";
 	
 	/**
 	 * 获取图片的最终URL
@@ -36,8 +36,20 @@ public class Image {
 		return imgSrc;
 	}
 	
+	/**
+	 * 获取临时图片地址，可根据需求组装成最终所需类型
+	 * @return
+	 */
+	public String getTempSrc() {
+		return tempSrc;
+	}
+	
 	public void setImgSrc(String imgSrc) {
 		this.imgSrc = imgSrc;
+	}
+	
+	public void setTempSrc(String tempSrc) {
+		this.tempSrc = tempSrc;
 	}
 	
 	public String getCode() {
@@ -53,12 +65,7 @@ public class Image {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	public String getTempSrc() {
-		return tempSrc;
-	}
-	public void setTempSrc(String tempSrc) {
-		this.tempSrc = tempSrc;
-	}
+	
 	public String getNaturalWidth() {
 		return naturalWidth;
 	}

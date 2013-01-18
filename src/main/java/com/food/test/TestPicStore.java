@@ -34,7 +34,7 @@ public class TestPicStore {
 		//注意:由于公司应用都走反向代理，为了获取用户ip请加入上述代码
 
 		//发送请求，获取返回数据
-		Map<String,String> map = (Map<String,String>)uploadApi.execute(token, new File("E:\\28012_842055_131658.jpg"), "test", header);
+		Map<String,String> map = (Map<String,String>)uploadApi.execute(token, new File("/Users/mac/Downloads/eatIMAGE/large_yEQh_61040000469b1190.jpg"), "test", header);
 
 		//成功的返回字段：code+url+width+height
 		System.out.println(map.get("code"));
