@@ -4,7 +4,7 @@ package com.food.model;
  * @author liangjun.zhong
  * @version 创建时间：Jan 18, 2013 7:50:49 PM
  */
-public class AwardProduction {
+public class AwardProduction extends Model {
 	
 	private String productionId; //Production的id	
 	private String addTime;

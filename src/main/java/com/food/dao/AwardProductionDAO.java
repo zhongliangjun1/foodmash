@@ -1,5 +1,8 @@
 package com.food.dao;
 
+import java.util.List;
+
+import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
@@ -29,6 +32,21 @@ public class AwardProductionDAO {
 		}else{
 		   return false;
 		}
+	}
+	
+	/**
+	 * 检查设备是否有新的获奖通知
+	 * @param deviceId
+	 * @return
+	 */
+	public List<ObjectId> checkNewAwardProduction(String deviceId){
+		//limit = limit+1; //less than limit
+		List<ObjectId> list = null;
+		MongoCollection awardProductions = jongo.getCollection("awardProductions");
+		if(awardProductions != null){
+			list = awardProductions.distinct("_id").query("{ productionId: "+deviceId+" , isInform:false } ").as(ObjectId.class);
+		}	
+		return list;
 	}
 
 }
