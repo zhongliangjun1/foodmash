@@ -27,6 +27,7 @@ public class ProductionDAO {
 	 */
 	@SuppressWarnings("rawtypes")
 	public Iterator getUsableProductionsIterator(int limit){
+		//limit = limit+1; //less than limit
 		Iterable<Production> productionsIterable = jongo.getCollection("productions").find("{ showNum: { $lt: "+limit+" } } ").as(Production.class);
 		if(productionsIterable != null){
 			return productionsIterable.iterator();
@@ -41,6 +42,7 @@ public class ProductionDAO {
 	 * @return
 	 */
 	public long getUsableProductionsNum(int limit){
+		//limit = limit+1; //less than limit
 		long num = 0;
 		MongoCollection productions = jongo.getCollection("productions");
 		if(productions != null){
@@ -55,12 +57,45 @@ public class ProductionDAO {
 	 * @return
 	 */
 	public List<ObjectId> getUsableProductionsList(int limit){
+		//limit = limit+1; //less than limit
 		List<ObjectId> list = null;
 		MongoCollection productions = jongo.getCollection("productions");
 		if(productions != null){
 			list = productions.distinct("_id").query("{ showNum: { $lt: "+limit+" } } ").as(ObjectId.class);
 		}	
 		return list;
+	}
+	
+	/**
+	 * 获取所有达到展示次数，尚未被计算获奖的作品集id List
+	 * @param limit
+	 * @return
+	 */
+	public List<ObjectId> getFillProductionsList(int limit){
+		limit = limit-1; //greater than limit
+		List<ObjectId> list = null;
+		MongoCollection productions = jongo.getCollection("productions");
+		if(productions != null){
+			list = productions.distinct("_id").query("{ showNum: { $gt: "+limit+" } , hasTreat:false} ").as(ObjectId.class);
+		}	
+		return list;
+	}
+	
+	/**
+	 * 获取所有达到展示次数，尚未被计算获奖的作品集 迭代器
+	 * 按likeNum 降序
+	 * @param limit
+	 * @return
+	 */
+	public Iterator<Production> getFillProductionsIterator(int limit){
+		limit = limit-1; //greater than limit
+		Iterable<Production> productionsIterable = jongo.getCollection("productions").find("{ showNum: { $gt: "+limit+" }, hasTreat:false } ").sort("{likeNum: -1}").as(Production.class);
+		if(productionsIterable != null){
+			Iterator<Production> iterator = productionsIterable.iterator();
+			return iterator;
+		}else{
+			return null;
+		}
 	}
 	
 	/**

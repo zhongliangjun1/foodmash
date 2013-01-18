@@ -17,6 +17,7 @@ public class Production extends Model {
 	
 	private int showNum; //展示次数
 	private int likeNum; //被like次数
+	private boolean hasTreat; //满足展示次数是否已被计算获奖
 	
 	
 	public String getAuthorId() {
@@ -54,6 +55,12 @@ public class Production extends Model {
 	}
 	public void setLikeNum(int likeNum) {
 		this.likeNum = likeNum;
+	}
+	public boolean isHasTreat() {
+		return hasTreat;
+	}
+	public void setHasTreat(boolean hasTreat) {
+		this.hasTreat = hasTreat;
 	}
 	
 	

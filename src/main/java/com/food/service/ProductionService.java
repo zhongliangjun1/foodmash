@@ -125,6 +125,7 @@ public class ProductionService {
 			production.setImgSrc(image.getTempSrc());
 			production.setLikeNum(0);
 			production.setShowNum(0);
+			production.setHasTreat(false);
 			result = productionDAO.addProduction(production);
 		}		
 		return result;

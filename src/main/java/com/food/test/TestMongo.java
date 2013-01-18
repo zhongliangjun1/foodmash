@@ -1,12 +1,13 @@
 package com.food.test;
 
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
+import com.food.dao.ProductionDAO;
 import com.food.model.Friend;
 import com.food.model.Production;
 import com.food.mongo.JongoClient;
@@ -14,6 +15,7 @@ import com.food.mongo.JongoClient;
 public class TestMongo {
     
 	private static Jongo jongo = JongoClient.getInstance();
+	private static ProductionDAO productionDAO = new ProductionDAO();
 	
 	/*find*/
 	public static void tryFind(int age){
@@ -29,6 +31,29 @@ public class TestMongo {
 		}
 	}
 	
+	public static void tryFindAward(){
+		List<ObjectId> list = productionDAO.getFillProductionsList(1);
+		if(list!=null){
+			for(ObjectId objectId:list){
+				System.out.println(objectId.toString());
+			}
+			System.out.println("test");
+		}else{
+			System.out.println("null");
+		}
+	}
+	
+	public static void tryFindAwardIterator(){
+		Iterator<Production> iterator = productionDAO.getFillProductionsIterator(1);
+		if(iterator!=null){
+			while(iterator.hasNext()){
+				Production p = (Production) iterator.next();
+				System.out.println(p.getStringId()+"|"+p.getLikeNum());
+			}
+		}else{
+			System.out.println("null");
+		}
+	}
 	
 	
 	/*error org.jongo.MongoIterator cannot be cast to java.util.List*/
@@ -67,9 +92,11 @@ public class TestMongo {
 	public static void main(String[] args) {
 		MongoCollection friends = jongo.getCollection("friends");
 		//trySave(friends);
-		tryFind(23);
+		//tryFind(23);
 		//tryUpdate(friends);
 		//tryFindList();
+		//tryFindAward();
+		tryFindAwardIterator();
 		
 	}
 
