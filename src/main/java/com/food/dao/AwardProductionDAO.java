@@ -44,7 +44,7 @@ public class AwardProductionDAO {
 		List<ObjectId> list = null;
 		MongoCollection awardProductions = jongo.getCollection("awardProductions");
 		if(awardProductions != null){
-			list = awardProductions.distinct("_id").query("{ productionId: "+deviceId+" , isInform:false } ").as(ObjectId.class);
+			list = awardProductions.distinct("_id").query("{ authorId: \""+deviceId+"\" , isInform:false } ").as(ObjectId.class);
 		}	
 		return list;
 	}

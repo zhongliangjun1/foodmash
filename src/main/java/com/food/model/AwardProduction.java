@@ -7,6 +7,7 @@ package com.food.model;
 public class AwardProduction extends Model {
 	
 	private String productionId; //Production的id	
+	private String authorId; //设备id
 	private String addTime;
 	private boolean isInform; //该获奖作品是否作者已知
 	
@@ -51,6 +52,13 @@ public class AwardProduction extends Model {
 	public void setAuthorAddress(String authorAddress) {
 		this.authorAddress = authorAddress;
 	}
+	public String getAuthorId() {
+		return authorId;
+	}
+	public void setAuthorId(String authorId) {
+		this.authorId = authorId;
+	}
+	
 	
 	
 

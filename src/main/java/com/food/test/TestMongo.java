@@ -7,6 +7,7 @@ import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 
+import com.food.dao.AwardProductionDAO;
 import com.food.dao.ProductionDAO;
 import com.food.model.Friend;
 import com.food.model.Production;
@@ -87,6 +88,16 @@ public class TestMongo {
 		friends.update("{name: 'Joe'}").with("{name:'newJoe',age:20,step:1}");
 	}
 	
+	public static void checkNewAwardProduction(){
+		AwardProductionDAO dao = new AwardProductionDAO();
+		List<ObjectId> list = dao.checkNewAwardProduction("deviceId3");
+		if(list!=null && list.size()>0){
+			System.out.println("new inform");
+		}else{
+			System.out.println("no new ");
+		}
+	}
+	
 	
 	
 	public static void main(String[] args) {
@@ -97,6 +108,7 @@ public class TestMongo {
 		//tryFindList();
 		//tryFindAward();
 		tryFindAwardIterator();
+		checkNewAwardProduction();
 		
 	}
 

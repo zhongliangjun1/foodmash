@@ -33,6 +33,7 @@ public class AwardTask extends TimerTask{
 				if(count>0){ //if 仍有获奖机会
 					AwardProduction awardProduction = new AwardProduction();
 					awardProduction.setProductionId(production.getStringId());
+					awardProduction.setAuthorId(production.getAuthorId()); //设备id,冗余字段
 					awardProduction.setInform(false); //消息尚未被消费
 					awardProductionDAO.addAwardProduction(awardProduction);
 				}
